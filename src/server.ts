@@ -28,8 +28,7 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   app.get("/filteredimage", async (req: Request, res: Response) => {
-
-    const { image_url } = req.query
+    const { image_url } :{image_url:string} = req.query
 
 
     if (!image_url) {
@@ -39,14 +38,12 @@ import { filterImageFromURL, deleteLocalFiles } from './util/util';
 
     const filteredpath = await filterImageFromURL(image_url)
     .then((result) => {
-      return res.status(200).sendFile(result)
-      // deleteLocalFiles([result])
+      res.status(200).sendFile(result)
+      res.on('finish', ()=>{deleteLocalFiles([result])})
     }).catch((error) => {
       return res.status(422)
         .send(`Unprocessable Entity`)
     })
-    // return res.status(200).sendFile(filteredpath)
-
   });
 
   /**************************************************************************** */
