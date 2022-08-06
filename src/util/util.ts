@@ -23,7 +23,6 @@ export async function filterImageFromURL(inputURL: string): Promise<string> {
         });
     } catch (error) {
       reject(error);
-      console.error(error);
     }
   });
 }
